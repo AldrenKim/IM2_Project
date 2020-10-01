@@ -101,8 +101,12 @@ function validateProdForm(){
 
   var size = document.forms["myform"]["size"].value;
   if(checkNum(size)==true){
-    if(size.length>5)
+    if(size.length==0)
     {
+      alert("Input product size");
+      return false;
+    }
+    if(size.length>5){
       alert("Size too large, must be at most 5 characters.");
       return false;
     }
@@ -117,11 +121,23 @@ function validateProdForm(){
     alert("Price must consist of numbers.");
     return false;
   }
+  else{
+    if(price.length==0){
+      alert("Input product's price.");
+      return false;
+    }
+  }
 
   var stocks = document.forms["myform"]["stocks"].value;
   if(checkNum(stocks)==false){
     alert("Stocks must consist of numbers.");
     return false;
+  }
+  else{
+    if(stocks.length==0){
+      alert("Size too large, must be at most 5 characters.");
+      return false;
+    }
   }
 
 
