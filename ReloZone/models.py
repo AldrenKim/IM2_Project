@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from datetime import datetime
 
 # Create your models here.
 class Person(models.Model):
@@ -23,18 +24,19 @@ class Person(models.Model):
 		db_table="Person"
 
 class Customer(Person):
-	dateRegistered=models.DateTimeField(default=timezone.now)
+	dateRegistered=models.DateTimeField(default=datetime.now, blank=True)
 	class Meta:
 		db_table= "Customer"
 
 class Product(models.Model):
-	dateRegistered=models.DateTimeField(default=timezone.now)
+	dateRegistered=models.DateTimeField(default=datetime.now, blank=True)
 	category= models.CharField(max_length=20)
-	productName = models.CharField(max_length=21)
+	productName = models.CharField(max_length=20)
 	brand = models.CharField(max_length=20)
 	color = models.CharField(max_length=20)
-	size = models.CharField(max_length=2)
+	size = models.CharField(max_length=20)
 	stocks= models.IntegerField()
 	price = models.IntegerField()
+	
 	class Meta:
 		db_table="Product"

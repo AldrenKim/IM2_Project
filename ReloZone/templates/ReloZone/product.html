@@ -329,103 +329,129 @@
                       <td>{{products.stocks}}</td>
                       <td>
 
-                        <!-- VIEW button -->
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter-{{products.id}}">
-                          VIEW
+                        <!-- VIEW & DELETE button -->
+                        <a type="button" class="btn btn-primary" href="#" data-toggle="modal" data-target="#newModal-{{products.id}}">VIEW</a>
+
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal-{{products.id}}">
+                          DELETE
                         </button>
 
-                      
-                      <!-- delete button -->
-                      <!-- Button trigger modal -->
-                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1-{{products.id}}">
-                        DELETE
-                      </button>
+                        
                       </td>
-                       <!-- VIEW Modal -->
-                       <div class="modal fade" id="exampleModalCenter-{{products.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title" id="exampleModalLongTitle">Product Information</h5>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                              <div class="container">
-                                <div class="form-row" style="margin-top: 20px; margin-left: 30px;">
-                                  <div>
-                                    <label for="productName" style="padding-right: 30px;">Name </label>
-                                    <input type="text" name="productName" id="productName"  value="{{products.productName}}">
-                                  </div>                                  
-                                </div>
-                                <hr>
-                                <div class="form-row" style="margin-top: 20px; margin-left: 30px;">
-                                    <div >
-                                      <label for="brand" style="padding-right: 30px;">Brand</label>
-                                      <input type="text" name="brand" id="brand"  value="{{products.brand}}">
-                                    </div>
-                                    <div>
-                                      <label for="category" style="padding-right: 8px;">Category</label>
-                                      <input type="text" name="category" id="category"  value="{{products.category}}">
-                                  </div>
-                                </div>
-                                <hr>
-                                <div class="form-row" style="margin-top: 20px; margin-left: 30px;">
-                                  <div>
-                                    <label for="size" style="padding-right: 40px;">Size</label>
-                                    <input type="text" name="size" id="size"  value="{{products.size}}">
-                                  </div>
-                                  <div>
-                                    <label for="color" style="padding-right: 33px;">Color</label>
-                                    <input type="text" name="color" id="color"  value="{{products.color}}">
-                                  </div>
-                                </div>
-                                <hr>
-                                <div class="form-row" style="margin-top: 20px; margin-left: 30px;">
-                                  <div>
-                                    <label for="stocks" style="padding-right: 24px;">Stocks</label>
-                                    <input type="text" name="stocks" id="stocks"  value="{{products.stocks}}">
-                                  </div>
-                                  <div>
-                                    <label for="price" style="padding-right: 33px;">Price</label> 
-                                    <input type="text" name="price" id="price"  value="{{products.price}}">
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-primary">UPDATE</button>
-                              <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCEL</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <!-- End of VIEW Modal -->
-
-
-                      <!-- Delete Modal -->
-                      <div class="modal fade" id="exampleModalCenter1-{{products.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h2 class="modal-title" id="exampleModalLongTitle">Delete Customer</h2>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                              <h4>Are you sure you want to delete this account?</h4>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-primary">DELETE</button>
-                              <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCEL</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <!-- End of Delete Modal -->
                     </tr>
+
+                        <!-- Modal VIEW-->
+                        <div class="modal fade" id="newModal-{{products.id}}" tabindex="-1" role="dialog" aria-labelledby="newModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header" style="background-color: #306EFF; color: black">
+                          <h5 class="modal-title">PRODUCT INFORMATION</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <form id="updateForm" method="post" onsubmit="return validateProdForm()">
+                        {% csrf_token %}
+                        <div class="modal-body">
+
+                          <!-- product id hidden -->
+                          <input type="text" id="id" name="id" value = {{products.id}} hidden>
+
+                          <div class="row">
+                            <div class="col-12" id="startup-tab-1">
+
+                                <div class = "row">
+                                  <div class = "col-sm-4">
+                                    <label for="">Name</label>
+                                    <input type="text" class="form-control" id="productName" placeholder="" name="productName" value ={{products.productName}}>
+                                  </div>
+                                </div>
+
+                                <hr>
+
+                                <div class="row">
+                                  <div class = "col-sm-4">
+                                    <label for="">Brand</label>
+                                    <input type="text" class="form-control" id="brand" placeholder=""  name="brand" value ={{products.brand}}>
+                                  </div>
+                                </div>
+
+                                <div class="row">
+                                  <div class = "col-sm-4">
+                                    <label for="">Category</label>
+                                    <input type="text" class="form-control" id="category" placeholder=""  name="category" value ={{products.category}}>
+                                  </div>
+                                </div>
+
+                                <hr>
+
+                                <div class = "row">
+                                  <div class = "col-sm-4">
+                                    <label for="">Size</label>
+                                    <input type="text" class="form-control" id="size" placeholder="" name="size" value ={{products.size}}>
+                                  </div>
+                                </div>
+
+                                <div class="row">
+                                  <div class = "col-sm-4">
+                                    <label for="">Color</label>
+                                    <input type="text" class="form-control" id="color" placeholder=""  name="color" value ={{products.color}}>
+                                  </div>
+                                </div>
+
+                                <hr>
+
+                                <div class="row">
+                                  <div class = "col-sm-4">
+                                    <label for="">Stocks</label>
+                                    <input type="text" class="form-control" id="stocks" placeholder=""  name="stocks" value ={{products.stocks}}>
+                                  </div>
+                                </div>
+
+                                <div class="row">
+                                  <div class = "col-sm-4">
+                                    <label for="">Price</label>
+                                    <input type="text" class="form-control" id="price" placeholder=""  name="price" value ={{products.price}}>
+                                  </div>
+                                </div>
+
+
+                            </div>
+                          </div>
+                        </div>
+                        <div class="modal-footer">  
+                            <button type="submit" id = "btnUpdate" name = "btnUpdate" class="button">UPDATE</button>                                  
+                            <button type="button" class="button btn-secondary" data-dismiss="modal">CLOSE</button>                          
+                        </div>
+                        </div>
+                        </form>
+                        </div>
+                        </div>
+
+                        <!-- Modal DELETE-->
+                        <div class="modal fade" id="exampleModal-{{products.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">DELETE RECORD</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <form id="deleteForm" method="post" >
+                        {% csrf_token %} 
+                        <div class="modal-body">                       
+                          <input type="text" name="id" value = {{products.id}} hidden>
+                          Are you sure you want to delete this record?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="submit" id = "btnDelete" name = "btnDelete" class="btn btn-primary">YES</button>
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
+                        </div>
+                        </div>
+                        </form>
+                        </div>
+                        </div>
                     {%  endfor  %}
                   </tbody>
 

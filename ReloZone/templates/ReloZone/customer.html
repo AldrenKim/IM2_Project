@@ -29,7 +29,13 @@
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.21/b-1.6.3/b-html5-1.6.3/datatables.min.css"/>
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
   
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  
+<!-- datepicker -->
+<link href="{% static '../static/vendor2/datepicker/daterangepicker.css' %}" rel="stylesheet" media="all">
+
+<!-- for validation of fields -->
+<script src="{% static '../static/js/validation.js' %}"></script>
 	
 
 </head>
@@ -323,7 +329,7 @@
 
 
                   <tbody>
-                    
+
                     {% for c in customer %}
 
                     <tr>
@@ -338,182 +344,156 @@
                       <td>{{c.province}}</td>
                       <td>
 
-                        <!-- VIEW button -->
-                          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#bd-example-modal-lg-{{c.id}}">
-                            VIEW
-                          </button>
+                        <!-- VIEW & DELETE button -->
+                        <a type="button" class="btn btn-primary" href="#" data-toggle="modal" data-target="#newModal-{{c.id}}">VIEW</a>
 
-                        
-                        <!-- delete button -->
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1-{{c.id}}">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal-{{c.id}}">
                           DELETE
                         </button>
 
-                      </td>
-                    <!-- VIEW Modal -->
-                    <div class="modal fade bd-example-modal-lg" id="bd-example-modal-lg-{{c.id}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                      <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Customer Information</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            <div class="page-content">
-                              <div class="form-v10-content">
-                                    <div class="form-left">
-                                          <h2>General</h2>
-                                          
-                                          <!-- lastname -->
-                                          <div class="form-row">
-                                              <label for="lastname">LAST NAME: &nbsp;&nbsp;
-                                                <input type="text" name="lastname" class="company" id="lastname" value="{{c.lastname}}">
-                                              </label>
-                                          </div>
+                         
+                        </td>
+                      </tr>
 
-                                          <div class="form-row">
-                                              <label for="firstname">FIRST NAME: &nbsp;&nbsp;
-                                                <input type="text" name="firstname" id="firstname" class="input-text" value="{{c.firstname}}">
-                                              </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                              <label for="middlename">MIDDLE NAME: &nbsp;&nbsp;
-                                                <input type="text" name="middlename" id="middlename" class="input-text" value="{{c.middlename}}">
-                                              </label>
-                                          </div>
-                      
-                                          <!-- gender -->
-                                          <div class="form-row">
-                                            <label for="gender">GENDER: &nbsp;&nbsp;
-                                              <input type="text" name="gender" class="gender" id="gender" value="{{c.gender}}">
-                                            </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <label for="status">STATUS: &nbsp;&nbsp;
-                                              <input type="text" name="status" class="status" id="status" value="{{c.status}}">
-                                            </label>
-                                          </div>
-                                          
-                                          <!-- spouse & children   -->
-                                          <div class="form-row">
-                                            <label for="spouse">SPOUSE NAME: &nbsp;&nbsp;
-                                              <input type="text" name="spouse" id="spouse" class="input-text" value="{{c.spouse}}">
-                                            </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <label for="children">NO. OF CHILDREN: &nbsp;&nbsp;
-                                              <input type="text" name="children" id="children" class="input-text" value="{{c.children}}">
-                                            </label>
-                                          </div>
-                      
-                                          <!-- Birthdate & DateRegistered -->
-                                          <div class="form-row">
-                                            <label for="birthday">BIRTHDATE: &nbsp;&nbsp;
-                                              <input type="text" name="birthday" id="birthday" class="input-text" value="{{c.birthday}}">
-                                            </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <label for="dateRegistered">DATE REGISTERED: &nbsp;&nbsp;
-                                              <input type="text" name="dateRegistered" id="dateRegistered" class="input-text" value="{{c.dateRegistered}}">
-                                            </label>
-                                          </div>
-
-                                          <div class="form-row">
-                                            
-                                          </div>
-                                        </div>
-                      
-                                      </div>
-                      
-                      
-                                      <!-- CONTACT DETAILS -->
-                      
-                                      <div class="form-right">
-                                        <br><br><br>
-                                          <h2>Contact Details</h2>
-                                          
-                                          <!-- Street & Brgy -->
-                                          <div class="form-row">
-                                                <label for="street">STREET: &nbsp;&nbsp;
-                                                  <input type="text" name="street" class="street" id="street" value="{{c.street}}">
-                                                </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                <label for="brgy">BRGY.: &nbsp;&nbsp;
-                                                  <input type="text" name="brgy" class="brgy" id="brgy" value="{{c.brgy}}">
-                                                </label>
-                                          </div>
-                      
-                                          <!-- Zip Code & City-->
-                                          <div class="form-row">
-                                                <label for="zip">ZIP: &nbsp;&nbsp;
-                                                  <input type="text" name="zip" class="zip" id="zip" value="{{c.zipp}}">
-                                                </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                <label for="city">CITY: &nbsp;&nbsp;
-                                                  <input type="text" name="city" class="city" id="city" value="{{c.city}}">
-                                                </label>
-                                          </div>
-                      
-                                          <!-- Province -->
-                                          <div class="form-row">
-                                              <label for="province">PROVINCE: &nbsp;&nbsp;
-                                                <input type="text" name="province" class="street" id="province" value="{{c.province}}">
-                                              </label>
-                                          </div>
-                      
-                                          <!-- Phone Number -->
-                                          <div class="form-row">
-                                              <label for="phone">PHONE NO.: &nbsp;&nbsp;
-                                                <input type="text" name="phone" class="phone" id="phone" value="{{c.phone}}">
-                                              </label>
-                                          </div>
-                      
-                                          <!-- Email -->
-                                          <div class="form-row">
-                                              <label for="email">EMAIL: &nbsp;&nbsp;
-                                                <input type="text" name="email" id="email" class="input-text" value="{{c.email}}">
-                                              </label>
-                                          </div>
-                      
-                                          <!-- Terms & Conditions 
-                                          <div class="form-checkbox">
-                                              <label class="container"><p>I do accept the <a href="#" class="text">Terms and Conditions</a> of ReloZone.</p>
-                                                    <input type="checkbox" name="checkbox">
-                                                    <span class="checkmark"></span>
-                                              </label>
-                                          </div> -->
-                                          
-                                          <!-- Register Customer Button-->
-              
-                                      </div>
-                              </div>
-                          </div>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-primary">UPDATE</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCEL</button>
-                          </div>
+                        <!-- Modal VIEW-->
+                  <div class="modal fade" id="newModal-{{c.id}}" tabindex="-1" role="dialog" aria-labelledby="newModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header" style="background-color: #306EFF; color: black">
+                          <h5 class="modal-title">CUSTOMER INFORMATION</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
                         </div>
-                      </div>
-                    </div>
-                    <!-- End of VIEW Modal -->
-                
-                    <!-- Delete Modal -->
-                        <div class="modal fade" id="exampleModalCenter1-{{c.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                          <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h2 class="modal-title" id="exampleModalLongTitle">Delete Customer</h2>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
-                              </div>
-                              <div class="modal-body">
-                                <h4>Are you sure you want to delete this account?</h4>
-                              </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-primary">DELETE</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">CANCEL</button>
-                              </div>
+                        <form id="updateForm" method="post" onsubmit="return validateForm()">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                          <input type="text" id="id" name="id" value = {{c.id}} hidden>
+                          <div class="row">
+                            <div class="col-12" id="startup-tab-1">
+
+                              <h6 style="text-align: center; color: black; font-weight: bolder;">GENERAL</h6>
+                              <br>
+
+                                <div class = "row">
+                                  <div class = "col-sm-4">
+                                    <label for="">Firstname</label>
+                                    <input type="text" class="form-control" id="firstname" placeholder="Firstname" name="firstname" value ={{c.firstname}}>
+                                  </div>
+                                  <div class = "col-sm-4">
+                                    <label for="">Middlename</label>
+                                    <input type="text" class="form-control" id="middlename" placeholder="Middlename"  name="middlename" value ={{c.middlename}}>
+                                  </div>
+                                  <div class = "col-sm-4">
+                                    <label for="">Lastname</label>
+                                    <input type="text" class="form-control" id="lastname" placeholder="Lastname"  name="lastname" value ={{c.lastname}}>
+                                  </div>
+                                </div>
+
+                                <div class = "row">
+                                  <div class = "col-sm-4">
+                                    <label for="">Gender</label>
+                                    <input type="text" class="form-control" id="gender" placeholder="" name="gender" value ={{c.gender}}>
+                                  </div>
+                                  <div class = "col-sm-4">
+                                    <label for="">Status</label>
+                                    <input type="text" class="form-control" id="status" placeholder=""  name="status" value ={{c.status}}>
+                                  </div>
+                                  <div class = "col-sm-4">
+                                    <label for="">Birthdate</label>
+                                    <input type="date" class="form-control" id="birthday" placeholder=""  name="birthday" value ={{c.birthday}} required>
+                                  </div>
+                                </div>
+
+                                <div class = "row">
+                                  <div class = "col-sm-4">
+                                    <label for="">Spouse's Name</label>
+                                    <input type="text" class="form-control" id="spouse" placeholder="" name="spouse" value ={{c.spouse}}>
+                                  </div>
+                                  <div class = "col-sm-4">
+                                    <label for="">No. of Children</label>
+                                    <input type="number" class="form-control" id="children" placeholder=""  name="children" value ={{c.children}}>
+                                  </div>
+                                </div>
+                              <br><br>
+                              <h6 style="text-align: center; color: black; font-weight: bolder;">CONTACT DETAILS</h6>
+                              <br>
+
+                                <div class = "row">
+                                  <div class = "col-sm-6">
+                                    <label for="">Street</label>
+                                    <input type="text" class="form-control" id="street" placeholder=""  name="street" value ={{c.street}}>
+                                  </div>
+                                  <div class = "col-sm-6">
+                                    <label for="">Barangay</label>
+                                    <input type="text" class="form-control" id="brgy" placeholder=""  name="brgy" value ={{c.brgy}}>
+                                  </div>
+                                </div>
+
+                                <div class = "row">
+                                  <div class = "col-sm-4">
+                                    <label for="">City</label>
+                                    <input type="text" class="form-control" id="city" placeholder="" name="city" value ={{c.city}}>
+                                  </div>
+                                  <div class = "col-sm-4">
+                                    <label for="">Province</label>
+                                    <input type="text" class="form-control" id="province" placeholder=""  name="province" value ={{c.province}}>
+                                  </div>
+                                  <div class = "col-sm-4">
+                                    <label for="">Zip Code</label>
+                                    <input type="number" class="form-control" id="zip" placeholder=""  name="zip" value ={{c.zipp}}>
+                                  </div>
+                                </div>
+
+                                <div class = "row">
+                                  <div class = "col-sm-6">
+                                    <label for="">Phone No.</label>
+                                    <input type="number" class="form-control" id="phone" placeholder=""  name="phone" value ={{c.phone}}>
+                                  </div>
+                                  <div class = "col-sm-6">
+                                    <label for="">Email</label>
+                                    <input type="text" class="form-control" id="email" placeholder="" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}" name="email" value ={{c.email}}>
+                                  </div>
+                                </div>
+
                             </div>
                           </div>
                         </div>
-                        <!-- End of Delete Modal -->
-                      </tr>
-                        
+                        <div class="modal-footer">  
+                            <button type="submit" id = "btnUpdate" name = "btnUpdate" class="button">UPDATE</button>                                  
+                            <button type="button" class="button btn-secondary" data-dismiss="modal">CLOSE</button>                          
+                        </div>
+                      </div>
+                    </form>
+                    </div>
+                  </div>
+
+                  <!-- Modal DELETE-->
+                  <div class="modal fade" id="exampleModal-{{c.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">DELETE RECORD</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <form id="deleteForm" method="post" >
+                        {% csrf_token %} 
+                        <div class="modal-body">                       
+                          <input type="text" name="id" value = {{c.id}} hidden>
+                          Are you sure you want to delete this record?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="submit" id = "btnDelete" name = "btnDelete" class="btn btn-primary">YES</button>
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
+                        </div>
+                      </div>
+                    </form>
+                    </div>
+                  </div>
+                     
+                    
                   {% endfor %}  
                   </tbody>
 

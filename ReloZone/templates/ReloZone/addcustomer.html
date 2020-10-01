@@ -30,7 +30,8 @@
 <!-- datepicker -->
 <link href="{% static '../static/vendor2/datepicker/daterangepicker.css' %}" rel="stylesheet" media="all">
 
-
+<!-- for validation of fields -->
+<script src="{% static '../static/js/validation.js' %}"></script>
 
 </head>
 
@@ -282,7 +283,7 @@
 
             <div class="page-content">
                 <div class="form-v10-content">
-                    <form class="form-detail" action="#"  id="myForm" name="myForm" method="POST" onsubmit="return validateForm()">
+                    <form class="form-detail" action="#" method="POST" id="myForm" name="myForm"  onsubmit="return validateForm()">
                       {% csrf_token %}  
                       <div class="form-left">
                             <h2>General Infomation</h2>
@@ -369,7 +370,7 @@
                             <!-- Zip Code & City-->
                             <div class="form-group">
                                 <div class="form-row form-row-1">
-                                    <input type="number"  name="zipp" class="zip" id="zipp" placeholder="Zip Code" required>
+                                    <input type="number"  name="zip" class="zip" id="zip" placeholder="Zip Code" required>
                                 </div>
                                 <div class="form-row form-row-2">
                                     <select name="city" id="city" required>
@@ -466,11 +467,14 @@
   <script src="{% static '../static/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
 
   <!-- Custom scripts for all pages-->
-  <script src="{% static '../static/js2/sb-admin-2.min.js' %}"></script>
+  <script src="{% static '../static/js/sb-admin-2.min.js' %}"></script>
 
+  <!-- Page level plugins -->
+  <script src="{% static '../static/vendor/chart.js/Chart.min.js' %}"></script>
 
-  <!-- for validation of fields -->
-  <script src="{% static '../static/js/validation.js'  %}"></script>
+  <!-- Page level custom scripts -->
+  <script src="{% static '../static/js/demo/chart-area-demo.js' %}"></script>
+  <script src="{% static '../static/js/demo/chart-pie-demo.js' %}"></script>
 
 </body>
 

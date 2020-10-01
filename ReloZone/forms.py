@@ -4,12 +4,12 @@ from .models import Customer, Product
 
 class CustomerForm(ModelForm):
     class Meta:
-        model=Customer
+        model = Customer
         fields= '__all__'
         exclude=['dateRegistered']
 
 
 class ProductForm(ModelForm):
     class Meta:
-        model=Product
-        fields=('productName', 'category')
+        model = Product
+        fields = ('productName', 'category')
