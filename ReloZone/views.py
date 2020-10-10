@@ -1,7 +1,7 @@
 from django.views.generic import TemplateView, View
 from django.shortcuts import render, redirect
-from .models import Customer, Product, Person
-from .forms import CustomerForm, ProductForm
+from .models import Customer, Product, Person, Order
+from .forms import CustomerForm, ProductForm, OrderForm
 from django.http import HttpResponse
 
 
@@ -16,11 +16,14 @@ class DashboardView(TemplateView):
 class CustomerView(TemplateView):
     def get(self, request):
         customer = Customer.objects.all()
-
+        products = Product.objects.all()
+        orders = Order.objects.all()
         data = {
-            "customer": customer
+            "customer": customer,
+            "products": products,
+            "orders": orders
         }
-
+        print(len(orders))
         return render(request, 'customer.html', data)
 
     def post(self, request):
@@ -58,13 +61,35 @@ class CustomerView(TemplateView):
                 print(cus)
                 print(pers)
                 print("Record deleted!")
+            
+            elif 'btnOrder' in request.POST:
+                cid = request.POST.get("id")
+                customer = Customer.objects.filter(
+                    pk=cid
+                ).get()
+                order_list = request.POST.getlist('chkBox')
+                quanti_list = request.POST.getlist('quanti')
+                for oder  in order_list:
+                    product = Product.objects.filter(id=oder).get()
+                    quantity = quanti_list[order_list.index(oder)]
+                    cost = product.price * float(quantity)
+                    Product.objects.filter(id=oder).update(stocks = product.stocks-int(quantity))
+                    product_info_dict={
+                        'customer': customer, 'product':product, 'cost':cost, 'quantity':quantity, 'status':'Pending'
+                    }
+                    Order.objects.create(**product_info_dict)
+                print("Done")
 
         customer = Customer.objects.all()
+        products = Product.objects.all()
+        orders = Order.objects.all()
 
         data = {
-            "customer": customer
+            "customer": customer,
+            "products": products,
+            "orders": orders
         }
-
+        
         return render(request, 'customer.html', data)
 
 class ProductView(TemplateView):
@@ -112,6 +137,7 @@ class AddCustomerView(View):
 
     def post(self, request):
         form = CustomerForm(request.POST)
+        
         print(form.errors)
         if form.is_valid():
 
@@ -123,7 +149,7 @@ class AddCustomerView(View):
             birthday = request.POST.get("birthday")
             street = request.POST.get("street")
             brgy= request.POST.get("brgy")
-            zipp = request.POST.get("zip")
+            zipp = request.POST.get("zipp")
             city = request.POST.get("city")
             province= request.POST.get("province")
             phone = request.POST.get("phone")
@@ -135,7 +161,6 @@ class AddCustomerView(View):
                                 zipp = zipp, city = city, province = province, email = email, phone = phone,
                                 spouse = spouse, children = children)
             form.save()
-            #return render(request, 'customer.html')
             customer = Customer.objects.all()
 
             data = {

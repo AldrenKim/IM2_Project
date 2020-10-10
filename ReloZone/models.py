@@ -36,7 +36,22 @@ class Product(models.Model):
 	color = models.CharField(max_length=20)
 	size = models.CharField(max_length=20)
 	stocks= models.IntegerField()
-	price = models.IntegerField()
+	price = models.FloatField()
 	
 	class Meta:
 		db_table="Product"
+
+class Order(models.Model):
+	customer= models.ForeignKey(
+		Customer, null=True, on_delete=models.SET_NULL
+	)
+	product= models.ForeignKey(
+		Product, null=True, on_delete=models.SET_NULL
+	)
+	date_create = models.DateTimeField(default=timezone.now)
+	status = models.CharField(max_length=10, default='None')
+	cost = models.FloatField()
+	quantity = models.IntegerField()
+
+	class Meta:
+		db_table="Order"

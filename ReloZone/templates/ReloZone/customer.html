@@ -346,11 +346,8 @@
 
                         <!-- VIEW & DELETE button -->
                         <a type="button" class="btn btn-primary" href="#" data-toggle="modal" data-target="#newModal-{{c.id}}">VIEW</a>
-
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal-{{c.id}}">
-                          DELETE
-                        </button>
-
+                        <button type="button" style="border-radius: 5px; height: 38px" class="btn-primary" data-toggle="modal" data-target="#buyModal-{{c.id}}">PLACE ORDER</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal-{{c.id}}">DELETE</button>
                          
                         </td>
                       </tr>
@@ -455,7 +452,24 @@
                                     <input type="text" class="form-control" id="email" placeholder="" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}" name="email" value ={{c.email}}>
                                   </div>
                                 </div>
-
+                                
+                                <br><br>
+                                <h6 style="text-align: center; color: black; font-weight: bolder;">ORDER</h6>
+                                <br><br>
+                                <div class="row">
+                                  {% for order in orders %} {% if order.customer.id == c.id %}
+                                  <div class="col-sm-4 ">
+                                      <h6>{{order.product.productName}}</h6>
+                                  </div>
+                                  <div class="col-sm-4 ">
+                                    <label for="">Status</label>
+                                  </div>
+                                  <div class="col-sm-4">
+                                      <input type="text" class="{% if order.status == 'None' %} text-gray-400 {% elif order.status == 'Pending' %} text-red {% else %} text-green {% endif %} text-center" value="{{order.status}}" disabled>
+                                  </div>
+                                  {% endif %} {% endfor %}
+                                </div>
+                                
                             </div>
                           </div>
                         </div>
@@ -467,6 +481,57 @@
                     </form>
                     </div>
                   </div>
+
+                    <!-- Modal BUY-->
+                    <div class="modal fade" id="buyModal-{{c.id}}" tabindex="-1" role="dialog" aria-labelledby="buyNormalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="buyModalLabel">ORDER</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form id="buyForm" method="post">
+                              {% csrf_token %}
+                              <div class="modal-body">
+                                <div class="row">
+                                  <div class="col-12" id="startup-tab-1">
+                                    <h6 style="text-align: center; color: black; font-weight: bolder;">GENERAL</h6>
+                                    <br>
+                                  </div>
+                                </div>
+                                <input type="text" name="id" value="{{c.id}}" hidden>
+                                {% for product in products %}
+                                <div class="row">
+                                  <div class = "col-sm-4">
+                                    <label for="">Product Name</label>
+                                    <input type="text" class="form-control" id="productName"  name="productName" value ={{product.productName}} disabled>
+                                  </div>
+                                  <div class = "col-sm-3">
+                                    <label for="">Price</label>
+                                    <input type="text" class="form-control" id="productPrice" name="productPrice" value ={{product.price}} disabled>
+                                  </div>
+                                  <div class = "col-sm-3">
+                                    <label for="">Quantity</label>
+                                    <input type="number" class="form-control" id="quanti" name="quanti">
+                                  </div>
+                                  <div class = "col-sm-2">
+                                    <label for="">&nbsp;</label>
+                                    <input type="checkbox" class="form-control" id="chkBox" name="chkBox" value ={{product.id}}>
+                                  </div>
+                                </div>                                
+                                {% endfor %}
+                                <div class="modal-footer" style="margin-top: 20px ;">  
+                                  <button type="submit" id = "btnOrder" name = "btnOrder" class="btn btn-primary">Place Order</button>                                  
+                                  <button type="button" class="button btn-secondary" data-dismiss="modal">CLOSE</button>                          
+                                </div>
+                              </div>
+                            </form>
+                        </div>
+                      </div>
+                    </div>
+
 
                   <!-- Modal DELETE-->
                   <div class="modal fade" id="exampleModal-{{c.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -492,7 +557,7 @@
                     </form>
                     </div>
                   </div>
-                     
+
                     
                   {% endfor %}  
                   </tbody>
