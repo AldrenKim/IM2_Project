@@ -79,7 +79,10 @@ class CustomerView(TemplateView):
                 quanti_list = request.POST.getlist('quanti')
                 for oder  in order_list:
                     product = Product.objects.filter(id=oder).get()
-                    quantity = quanti_list[order_list.index(oder)]
+                    if(quanti_list[order_list.index(oder)] is not ""):
+                        quantity = quanti_list[order_list.index(oder)]
+                    else:
+                        quantity=0
                     cost = product.price * float(quantity)
                     Product.objects.filter(id=oder).update(stocks = product.stocks-int(quantity))
                     product_info_dict={
