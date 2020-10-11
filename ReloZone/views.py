@@ -11,7 +11,15 @@ class IndexView(TemplateView):
     #    return render(request,'index.html')
 
 class DashboardView(TemplateView):
-    template_name='dashboard.html'
+    def get(self, request):
+        customer = Customer.objects.all()
+        products = Product.objects.all()
+        orders = Order.objects.all()
+        context={}
+        context['customer']=len(customer)
+        context['products']=len(products)
+        context['orders']=len(orders)     
+        return render(request, 'dashboard.html', context)
     
 class CustomerView(TemplateView):
     def get(self, request):

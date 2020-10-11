@@ -362,7 +362,7 @@
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
-                        <form id="updateForm" method="post" onsubmit="return validateForm()">
+                        <form id="updateForm" method="post" onsubmit="return validateUpdateForm()">
                         {% csrf_token %}
                         <div class="modal-body">
                           <input type="text" id="id" name="id" value = {{c.id}} hidden>

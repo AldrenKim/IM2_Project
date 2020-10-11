@@ -20,9 +20,79 @@
   <!-- Custom styles for this template-->
   <link href="{% static '../static/css4/sb-admin-2.min.css' %}" rel="stylesheet">
 
+  <script type="text/javascript">
+      function eskew(){
+        var z= document.querySelectorAll('.ellipse');
+        console.log(z.length);
+        z.forEach(e=> e.classList.toggle('deSkew'));
+      }
+  </script>
+
+  <style type="text/css">
+
+    .main-body{
+      margin-left: 100px;
+      padding: 100px;
+      height: 60%;
+      display: flex;
+      justify-content: space-around;
+    }
+    .ellipse{
+      width: 211px;
+      height: 191px;
+      border-radius: 70%;
+
+      background: #4e73df;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.38);
+    }
+    .deSkew{
+      transform: rotate(360deg);
+      transition: transform 2s ease;
+    }
+
+    .text-ellipse{
+      /* 20 */
+      position: relative;
+      width: 111px;
+      height: 84px;
+      left:48px;
+      top: 50px;
+    
+      font-family: Georgia, serif;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 84px;
+      line-height: 84px;
+      text-align: center;
+    
+
+      color: #000000;
+    
+      text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.62);
+    }
+    .title{
+      position: relative;
+      top:120px;
+      left: 55px;
+    }
+    .text-head{
+    
+      font-family: Georgia, serif;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 80px;
+      line-height: 84px;
+      color: black;
+      text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.62);
+    }
+    .above{
+      margin-top: 50px;
+    }
+  </style>
+
 </head>
 
-<body id="page-top">
+<body id="page-top" onload="eskew()">
 
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -264,8 +334,32 @@
         </nav>
         <!-- End of Topbar -->
 
-        
+        <div class="above" style="display: flex;justify-content: center;">
+          <h4 class="text-head">Status</h4>
+        </div>
 
+        <div class="main-body">
+          <div class="ellipse">
+            <div >
+              <h3 class="text-ellipse" >{{customer}}</h3>
+              <h4 class="title">Customer<img src="{% static '../static/resources/images/customer-satisfaction.png' %}" style="margin-left:5px; width: 20%; height: 20%;"></h4>
+              
+            </div>
+          </div>
+          <div class="ellipse">
+            <div >
+              <h3 class="text-ellipse" >{{products}}</h3>
+              <h4 class="title">Products<img src="{% static '../static/resources/images/new-product.png' %}" style="margin-left:5px; width: 20%; height: 20%;"></h4>
+            </div>
+          </div>
+          <div class="ellipse">
+            <div >
+              <h3 class="text-ellipse" >{{orders}}</h3>
+              <h4 class="title">Orders&nbsp;<img src="{% static '../static/resources/images/order.png' %}" style="margin-left:5px; width: 20%; height: 20%;"></h4>
+            </div>
+          </div>
+
+        </div>
       <!-- Footer -->
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
