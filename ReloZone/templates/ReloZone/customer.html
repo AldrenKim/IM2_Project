@@ -331,6 +331,7 @@
                   <tbody>
 
                     {% for c in customer %}
+                    {% if c.delete_Status == 'None' %}
 
                     <tr>
                       <td>{{c.dateRegistered}}</td> 
@@ -351,7 +352,6 @@
                          
                         </td>
                       </tr>
-
                         <!-- Modal VIEW-->
                   <div class="modal fade" id="newModal-{{c.id}}" tabindex="-1" role="dialog" aria-labelledby="newModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">
@@ -467,7 +467,7 @@
                                   <div class="col-sm-4">
                                       <input type="text" class="{% if order.status == 'None' %} text-gray-400 {% elif order.status == 'Pending' %} text-red {% else %} text-green {% endif %} text-center" value="{{order.status}}" disabled>
                                   </div>
-                                  {% endif %} {% endfor %}
+                                   {% endif %} {% endfor %} 
                                 </div>
                                 
                             </div>
@@ -558,7 +558,7 @@
                     </div>
                   </div>
 
-                    
+                  {% endif %}
                   {% endfor %}  
                   </tbody>
 
