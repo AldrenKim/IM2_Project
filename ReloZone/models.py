@@ -19,6 +19,7 @@ class Person(models.Model):
 	province= models.CharField(max_length=25)
 	email = models.EmailField()
 	phone = models.CharField(max_length=11)
+	delete_Status = models.CharField(max_length=10, default='None', blank=True)
 
 	class Meta:
 		db_table="Person"
@@ -37,6 +38,7 @@ class Product(models.Model):
 	size = models.CharField(max_length=20)
 	stocks= models.IntegerField()
 	price = models.FloatField()
+	delete_Status = models.CharField(max_length=10, default='None', blank=True)
 	
 	class Meta:
 		db_table="Product"
