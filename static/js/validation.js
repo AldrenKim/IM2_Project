@@ -1,6 +1,6 @@
 function validateForm() {
-    var zip = document.forms["myForm"]["zipp"].value.length;
-    if (zip > 4 || zip < 4) {
+    var zipp = document.forms["myForm"]["zipp"].value.length;
+    if (zipp > 4 || zipp < 4) {
         console.log("Zip error");
       alert("Zip code must have 4 integers");
       return false;
@@ -236,8 +236,10 @@ function checkColor(colors, item){
 }
 
 function checkNum(x){
-  for(i=0;i<price.length;i++){
-    if(price.charCodeAt(i)>=48 && price.charCodeAt(i)<=58){
+  console.log("Here");
+  for(i=0;i<x.length;i++){
+    if(x.charCodeAt(i)>=48 && x.charCodeAt(i)<=58){
+      console.log(x);
       return true;
     }
   }

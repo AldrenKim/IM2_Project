@@ -64,10 +64,10 @@ class CustomerView(TemplateView):
             elif 'btnDelete' in request.POST:
                 print('Delete button clicked!')
                 cid = request.POST.get("id")
-                cus = Customer.objects.filter(pk = cid).delete()
-                pers = Person.objects.filter(pk = cid).delete()
-                print(cus)
-                print(pers)
+                cus = Customer.objects.filter(pk=cid).update(delete_Status='Yes')
+                pers = Person.objects.filter(pk = cid).update(delete_Status='Yes')
+                # cus = Customer.objects.filter(pk = cid).delete()
+                # pers = Person.objects.filter(pk = cid).delete()
                 print("Record deleted!")
             
             elif 'btnOrder' in request.POST:
@@ -79,7 +79,7 @@ class CustomerView(TemplateView):
                 quanti_list = request.POST.getlist('quanti')
                 for oder  in order_list:
                     product = Product.objects.filter(id=oder).get()
-                    if(quanti_list[order_list.index(oder)] is not ""):
+                    if(quanti_list[order_list.index(oder)] != ""):
                         quantity = quanti_list[order_list.index(oder)]
                     else:
                         quantity=0
@@ -131,7 +131,9 @@ class ProductView(TemplateView):
             elif 'btnDelete' in request.POST:
                 print("Delete product button clicked!")
                 pid = request.POST.get("id")
-                prod = Product.objects.filter(pk = pid).delete()
+                category= request.POST.get('category')
+                productName=request.POST.get('productName')
+                prod = Product.objects.filter(pk = pid).update(category=category,  productName=productName, delete_Status='Yes')
                 print(prod)
                 print("Record deleted!")
         product = Product.objects.all()
@@ -148,7 +150,6 @@ class AddCustomerView(View):
 
     def post(self, request):
         form = CustomerForm(request.POST)
-        
         print(form.errors)
         if form.is_valid():
 
@@ -167,10 +168,11 @@ class AddCustomerView(View):
             email = request.POST.get("email")
             spouse = request.POST.get("spouse")
             children = request.POST.get("children")
+            delete = request.POST.get("delStat")
             form = Customer(firstname = firstname, middlename = middlename, lastname = lastname,
                                 status = status, gender = gender, birthday = birthday, street = street, brgy = brgy,
                                 zipp = zipp, city = city, province = province, email = email, phone = phone,
-                                spouse = spouse, children = children)
+                                spouse = spouse, children = children, delete_Status=delete)
             form.save()
             customer = Customer.objects.all()
 
@@ -188,7 +190,7 @@ class AddProductView(View):
         return render(request, 'addproduct.html')
     def post(self, request):
         form = ProductForm(request.POST)
-        form.errors
+        print(form.errors)
         if form.is_valid():
             category = request.POST.get('category')
             productName =request.POST.get('productName')
@@ -197,8 +199,9 @@ class AddProductView(View):
             size= request.POST.get('size')
             stocks= request.POST.get('stocks')
             price = request.POST.get('price')
+            delete = request.POST.get('delStat')
             form = Product(category=category, productName=productName,
-            brand=brand, color=color, size=size, stocks=stocks, price=price)
+            brand=brand, color=color, size=size, stocks=stocks, price=price, delete_Status=delete)
             form.save()
             product = Product.objects.all()
 
