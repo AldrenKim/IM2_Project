@@ -12,12 +12,20 @@ class IndexView(TemplateView):
 
 class DashboardView(TemplateView):
     def get(self, request):
+        z=0
+        w=0
         customer = Customer.objects.all()
         products = Product.objects.all()
         orders = Order.objects.all()
+        for c in customer:
+            if c.delete_Status=="None":
+                z+=1
+        for p in products:
+            if p.delete_Status=="None":
+                w+=1
         context={}
-        context['customer']=len(customer)
-        context['products']=len(products)
+        context['customer']=z
+        context['products']=w
         context['orders']=len(orders)     
         return render(request, 'dashboard.html', context)
     
@@ -47,7 +55,7 @@ class CustomerView(TemplateView):
                 birthday = request.POST.get("birthday")
                 street = request.POST.get("street")
                 brgy= request.POST.get("brgy")
-                zipp = request.POST.get("zip")
+                zipp = request.POST.get("zipp")
                 city = request.POST.get("city")
                 province= request.POST.get("province")
                 phone = request.POST.get("phone")
@@ -113,7 +121,6 @@ class ProductView(TemplateView):
 
     def post(self, request):
         if request.method == 'POST':
-            print(request.POST)
             if 'btnUpdate' in request.POST:
                 print("Update product button clicked!")
                 pid = request.POST.get('id')
@@ -122,10 +129,11 @@ class ProductView(TemplateView):
                 brand = request.POST.get('brand')
                 color = request.POST.get('color')
                 size= request.POST.get('size')
-                stocks= request.POST.get('stocks')
+                stocks= request.POST.get('stockss')
                 price = request.POST.get('price')
                 update_product = Product.objects.filter(pk = pid).update(category=category, productName=productName,
-                                brand=brand, color=color, size=size, stocks=stocks, price=price)
+                                brand=brand, color=color, size=size, stocks=stocks, price=price)                
+                print(pid)
                 print(update_product)
                 print("Product updated!")
             elif 'btnDelete' in request.POST:
@@ -137,7 +145,6 @@ class ProductView(TemplateView):
                 print(prod)
                 print("Record deleted!")
         product = Product.objects.all()
-
         data = {
             "product": product
         }
